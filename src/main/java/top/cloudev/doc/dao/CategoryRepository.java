@@ -13,9 +13,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 //@RepositoryRestResource(path = "newpath")
 public interface CategoryRepository extends JpaRepository<Category,Long> {
 
-    Page<Category> findByIsDeletedFalse(Pageable pageable);
+    Page<Category> findByProjectIdAndIsDeletedFalse(long projectId, Pageable pageable);
 
     // 标准查询
-    Page<Category> findByNameContainingAndIsDeletedFalseAllIgnoringCase(String name, Pageable pageable);
+    Page<Category> findByProjectIdAndNameContainingAllIgnoringCaseAndIsDeletedFalse(long projectId, String name, Pageable pageable);
 
 }
