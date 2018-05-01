@@ -99,12 +99,6 @@ public class Category implements Serializable {
     private long deleterUserId;
 
     /**
-     *TODO 请将数据表的名称及字段名称加入到国际化语言包中:
-     TableName.category=\u6587\u6863\u5206\u7c7b
-     FieldName.category.categoryId=\u6587\u6863\u5206\u7c7bID
-     FieldName.category.projectId=\u6587\u6863\u5206\u7c7b\u6240\u5c5e\u7684\u9879\u76ee
-     FieldName.category.name=\u5206\u7c7b\u540d\u79f0
-     FieldName.category.sequence=\u6392\u5e8f
      *
      *
      *Tip:
