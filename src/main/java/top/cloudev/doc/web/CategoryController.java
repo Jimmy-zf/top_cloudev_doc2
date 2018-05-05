@@ -98,7 +98,7 @@ public class CategoryController {
      * @return
      */
     @GetMapping("/list")
-    public Map<String, Object> list(@PageableDefault(sort = { "categoryId" }, direction = Sort.Direction.DESC) Pageable pageable, CategoryDTO dto){
+    public Map<String, Object> list(@PageableDefault(sort = { "sequence" }, direction = Sort.Direction.ASC) Pageable pageable, CategoryDTO dto){
         Map<String, Object> map = Maps.newHashMap();
 
         Page<Category> pagedata = categoryService.getPageData(dto,pageable);

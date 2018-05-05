@@ -165,7 +165,7 @@ public class CategoryControllerTest {
 
         /**---------------------测试用例赋值开始---------------------**/
         //TODO 将下面的null值换为测试参数
-        Pageable pageable=new PageRequest(0,10, Sort.Direction.DESC,"categoryId");
+        Pageable pageable=new PageRequest(0,10, Sort.Direction.ASC,"sequence");
         // 期望获得的结果数量(默认有两个测试用例，所以值应为"2L"，如果新增了更多测试用例，请相应设定这个值)
         expectResultCount = 4L;
         /**---------------------测试用例赋值结束---------------------**/
