@@ -93,13 +93,15 @@ public class CategoryControllerTest {
         //提示：构建"新增数据"提示：根据新增数据时客户端实际能提供的参数，依据"最少字段和数据正确的原则"构建
         //提示：构建"修改过的数据"提示：根据修改数据时客户端实际能提供的参数构建
         //提示：可以构建"非物理删除的数据"
+
+        //添加分类：用例2(分类名称与装配数据中的分类名称有部分关键字相同：同一个项目，Name有相同关键字)
         /**---------------------测试用例赋值开始---------------------**/
-        //TODO 将下面的null值换为测试参数
         Category c2 = new Category();
-        c2.setProjectId(null);
-        c2.setName(null);
-        c2.setSequence(null);
+        c2.setProjectId(1L);
+        c2.setName("文档分类二");
+        c2.setSequence(2);
         c2.setCreatorUserId(2);
+        categoryRepository.save(c2);
         //提示：构造"修改过的数据"时需要给"最近修改时间"和"最近修改者"赋值
         //c2.setLastModificationTime(new Date());
         //c2.setLastModifierUserId(1);
@@ -107,7 +109,53 @@ public class CategoryControllerTest {
         //c2.setIsDeleted(true);
         //c2.setDeletionTime(new Date());
         //c2.setDeleterUserId(1);
-        categoryRepository.save(c2);
+        /**---------------------测试用例赋值结束---------------------**/
+
+        //添加分类：用例3(分类名称与用例1和用例2完全不同：同一个项目，Name没有相同的关键字)
+        /**---------------------测试用例赋值开始---------------------**/
+        Category c3 = new Category();
+        c3.setProjectId(1L);
+        c3.setName("项目资料归档");
+        c3.setSequence(3);
+        c3.setCreatorUserId(2);
+        categoryRepository.save(c3);
+        /**---------------------测试用例赋值结束---------------------**/
+
+        // 添加分类：用例4(名称与用例1一样，但是所属项目不同)
+        /**---------------------测试用例赋值开始---------------------**/
+        Category c4 = new Category();
+        c4.setProjectId(2L);
+        c4.setName("文档分类一");
+        c4.setSequence(1);
+        c4.setCreatorUserId(2);
+        categoryRepository.save(c4);
+        /**---------------------测试用例赋值结束---------------------**/
+
+        // 修改分类：用例5
+        /**---------------------测试用例赋值开始---------------------**/
+        Category c5 = new Category();
+        c5.setProjectId(1L);
+        c5.setName("被修改过的文档分类");
+        c5.setSequence(4);
+        c5.setCreatorUserId(2);
+        c5.setLastModifierUserId(1);
+        c5.setLastModificationTime(new Date());
+        categoryRepository.save(c5);
+        /**---------------------测试用例赋值结束---------------------**/
+
+        // 删除分类：用例6
+        /**---------------------测试用例赋值开始---------------------**/
+        Category c6 = new Category();
+        c6.setProjectId(1L);
+        c6.setName("被删除过的文档");
+        c6.setSequence(5);
+        c6.setCreatorUserId(2);
+        c6.setLastModifierUserId(1);
+        c6.setLastModificationTime(new Date());
+        c6.setIsDeleted(true);
+        c6.setDeleterUserId(1);
+        c6.setDeletionTime(new Date());
+        categoryRepository.save(c6);
         /**---------------------测试用例赋值结束---------------------**/
 
 
