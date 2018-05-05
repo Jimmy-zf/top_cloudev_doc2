@@ -68,11 +68,10 @@ public class CategoryControllerTest {
     @Before
     public void setUp() throws JsonProcessingException {
         /**---------------------测试用例赋值开始---------------------**/
-        //TODO 参考实际业务中新增数据所提供的参数，基于"最少字段和数据正确的原则"，将下面的null值换为测试参数
         c1 = new Category();
-        c1.setProjectId(null);
-        c1.setName(null);
-        c1.setSequence(null);
+        c1.setProjectId(1L);
+        c1.setName("文档分类一");
+        c1.setSequence(1);
         c1.setCreatorUserId(1);
         categoryRepository.save(c1);
         /**---------------------测试用例赋值结束---------------------**/
