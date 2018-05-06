@@ -202,15 +202,17 @@ public class CategoryControllerTest {
          * 测试标准查询
          */
 
+        //标准查询1：projectId=1,keyWord="文档分类"
         /**---------------------测试用例赋值开始---------------------**/
         //TODO 将下面的null值换为测试参数
         dto = new CategoryDTO();
-        dto.setKeyword(null);
+        dto.setKeyword("文档分类");
+        dto.setProjectId(c1.getProjectId());
 
-        pageable=new PageRequest(0,10, Sort.Direction.DESC,"categoryId");
+        pageable=new PageRequest(0,10, Sort.Direction.ASC,"sequence");
 
         // 期望获得的结果数量
-        expectResultCount = null;
+        expectResultCount = 3L;
         /**---------------------测试用例赋值结束---------------------**/
 
         String keyword = dto.getKeyword().trim();
@@ -221,7 +223,7 @@ public class CategoryControllerTest {
 
         mvcResult = mockMvc
                 .perform(
-                        MockMvcRequestBuilders.get("/category/list")
+                        MockMvcRequestBuilders.get("/category/list?projectId=1")
                                 .param("keyword",dto.getKeyword())
                                 .accept(MediaType.APPLICATION_JSON)
                 )
@@ -232,7 +234,7 @@ public class CategoryControllerTest {
                 // 检查返回的数据节点
                 .andExpect(jsonPath("$.pagedata.totalElements").value(expectResultCount))
                 .andExpect(jsonPath("$.dto.keyword").value(dto.getKeyword()))
-                .andExpect(jsonPath("$.dto.name").isEmpty())
+                .andExpect(jsonPath("$.dto.projectId").value(1))
                 .andReturn();
 
         // 提取返回结果中的列表数据及翻页信息
@@ -243,8 +245,131 @@ public class CategoryControllerTest {
 
         Assert.assertEquals("错误，标准查询返回数据与期望结果有差异",expectData,responseData);
 
+        //标准查询2：projectId=1,keyWord=""
+        /**---------------------测试用例赋值开始---------------------**/
+        dto = new CategoryDTO();
+        dto.setKeyword("");
+        dto.setProjectId(c1.getProjectId());
 
+        pageable=new PageRequest(0,10, Sort.Direction.ASC,"sequence");
 
+        // 期望获得的结果数量
+        expectResultCount = 4L;
+        /**---------------------测试用例赋值结束---------------------**/
+
+        keyword = dto.getKeyword().trim();
+
+        // 直接通过dao层接口方法获得期望的数据
+        pagedata = categoryRepository.findByProjectIdAndNameContainingAllIgnoringCaseAndIsDeletedFalse(dto.getProjectId(), keyword, pageable);
+        expectData = JsonPath.read(Obj2Json(pagedata),"$").toString();
+
+        mvcResult = mockMvc
+                .perform(
+                        MockMvcRequestBuilders.get("/category/list?projectId=1")
+                                .param("keyword",dto.getKeyword())
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查返回的数据节点
+                .andExpect(jsonPath("$.pagedata.totalElements").value(expectResultCount))
+                .andExpect(jsonPath("$.dto.keyword").value(dto.getKeyword()))
+                .andExpect(jsonPath("$.dto.projectId").value(1))
+                .andReturn();
+
+        // 提取返回结果中的列表数据及翻页信息
+        responseData = JsonPath.read(mvcResult.getResponse().getContentAsString(),"$.pagedata").toString();
+
+        System.out.println("=============标准查询期望结果：" + expectData);
+        System.out.println("=============标准查询实际返回：" + responseData);
+
+        Assert.assertEquals("错误，标准查询返回数据与期望结果有差异",expectData,responseData);
+
+        //标准查询3：projectId=1,keyWord="资料归档"
+        /**---------------------测试用例赋值开始---------------------**/
+        dto = new CategoryDTO();
+        dto.setKeyword("资料归档");
+        dto.setProjectId(c1.getProjectId());
+
+        pageable=new PageRequest(0,10, Sort.Direction.ASC,"sequence");
+
+        // 期望获得的结果数量
+        expectResultCount = 1L;
+        /**---------------------测试用例赋值结束---------------------**/
+
+        keyword = dto.getKeyword().trim();
+
+        // 直接通过dao层接口方法获得期望的数据
+        pagedata = categoryRepository.findByProjectIdAndNameContainingAllIgnoringCaseAndIsDeletedFalse(dto.getProjectId(), keyword, pageable);
+        expectData = JsonPath.read(Obj2Json(pagedata),"$").toString();
+
+        mvcResult = mockMvc
+                .perform(
+                        MockMvcRequestBuilders.get("/category/list?projectId=1")
+                                .param("keyword",dto.getKeyword())
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查返回的数据节点
+                .andExpect(jsonPath("$.pagedata.totalElements").value(expectResultCount))
+                .andExpect(jsonPath("$.dto.keyword").value(dto.getKeyword()))
+                .andExpect(jsonPath("$.dto.projectId").value(1))
+                .andReturn();
+
+        // 提取返回结果中的列表数据及翻页信息
+        responseData = JsonPath.read(mvcResult.getResponse().getContentAsString(),"$.pagedata").toString();
+
+        System.out.println("=============标准查询期望结果：" + expectData);
+        System.out.println("=============标准查询实际返回：" + responseData);
+
+        Assert.assertEquals("错误，标准查询返回数据与期望结果有差异",expectData,responseData);
+
+        //标准查询4：projectId=2,keyWord="资料归档"
+        /**---------------------测试用例赋值开始---------------------**/
+        dto = new CategoryDTO();
+        dto.setKeyword("分类");
+        dto.setProjectId(2L);
+
+        pageable=new PageRequest(0,10, Sort.Direction.ASC,"sequence");
+
+        // 期望获得的结果数量
+        expectResultCount = 1L;
+        /**---------------------测试用例赋值结束---------------------**/
+
+        keyword = dto.getKeyword().trim();
+
+        // 直接通过dao层接口方法获得期望的数据
+        pagedata = categoryRepository.findByProjectIdAndNameContainingAllIgnoringCaseAndIsDeletedFalse(dto.getProjectId(), keyword, pageable);
+        expectData = JsonPath.read(Obj2Json(pagedata),"$").toString();
+
+        mvcResult = mockMvc
+                .perform(
+                        MockMvcRequestBuilders.get("/category/list?projectId=2")
+                                .param("keyword",dto.getKeyword())
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查返回的数据节点
+                .andExpect(jsonPath("$.pagedata.totalElements").value(expectResultCount))
+                .andExpect(jsonPath("$.dto.keyword").value(dto.getKeyword()))
+                .andExpect(jsonPath("$.dto.projectId").value(2))
+                .andReturn();
+
+        // 提取返回结果中的列表数据及翻页信息
+        responseData = JsonPath.read(mvcResult.getResponse().getContentAsString(),"$.pagedata").toString();
+
+        System.out.println("=============标准查询期望结果：" + expectData);
+        System.out.println("=============标准查询实际返回：" + responseData);
+
+        Assert.assertEquals("错误，标准查询返回数据与期望结果有差异",expectData,responseData);
 
     }
 
