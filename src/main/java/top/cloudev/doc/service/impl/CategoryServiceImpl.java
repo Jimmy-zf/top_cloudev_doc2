@@ -1,5 +1,7 @@
 package top.cloudev.doc.service.impl;
 
+import top.cloudev.doc.common.BusinessException;
+import top.cloudev.doc.common.ErrorCode;
 import top.cloudev.doc.dao.CategoryRepository;
 import top.cloudev.doc.domain.Category;
 import top.cloudev.doc.dto.CategoryDTO;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 领域类 Category(文档分类) 的服务实现层
@@ -38,10 +41,18 @@ public class CategoryServiceImpl implements CategoryService {
     @CachePut(value = "category", key = "#category.categoryId")//@CachePut缓存新增的或更新的数据到缓存，其中缓存名称为category，数据的key是category的categoryId
     public Category save(Category category, HttpServletRequest request) throws Exception {
 
+        //判断同一项目里是否有同名文档分类
+        List<Category> list = categoryRepository.findByProjectIdAndNameAndIsDeletedFalse(category.getProjectId(),category.getName());
+        if(list.size() > 0){
+            throw new BusinessException(ErrorCode.User_Username_Exists);
+        }
+
         if(category.getCategoryId()==null){
+
             category.setCreatorUserId(Long.valueOf(request.getParameter("operator")));
             return categoryRepository.save(category);
         }else{
+
             Category c = this.findOne(category);
 
             if(request.getParameterValues("projectId") != null && !category.getProjectId().equals(c.getProjectId()))

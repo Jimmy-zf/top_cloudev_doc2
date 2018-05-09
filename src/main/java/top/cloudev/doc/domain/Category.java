@@ -53,6 +53,8 @@ public class Category implements Serializable {
      * 排序
      */
     //@Range(min=value,max=value, groups={CheckCreate.class, CheckModify.class})
+    @Min(value = 1, groups={CheckCreate.class, CheckModify.class})
+    @NotNull(groups={CheckCreate.class, CheckModify.class})
     @Column(nullable = false, name = "sequence")
     private Integer sequence;
 

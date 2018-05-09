@@ -67,6 +67,8 @@ public class CategoryControllerTest {
     // 使用JUnit的@Before注解可在测试开始前进行一些初始化的工作
     @Before
     public void setUp() throws JsonProcessingException {
+
+        //添加分类：用例1
         /**---------------------测试用例赋值开始---------------------**/
         c1 = new Category();
         c1.setProjectId(1L);
@@ -88,13 +90,11 @@ public class CategoryControllerTest {
     @Test
     public void testList() throws Exception {
 
-        //TODO 建议借鉴下面的测试用例赋值模版构造更多数据以充分测试"无搜索列表"、"标准查询"和"高级查询"的表现
-
         //提示：构建"新增数据"提示：根据新增数据时客户端实际能提供的参数，依据"最少字段和数据正确的原则"构建
         //提示：构建"修改过的数据"提示：根据修改数据时客户端实际能提供的参数构建
         //提示：可以构建"非物理删除的数据"
 
-        //添加分类：用例2(分类名称与装配数据中的分类名称有部分关键字相同：同一个项目，Name有相同关键字)
+        //添加分类：用例2(分类名称与装配数据中的分类名称有部分关键字相同：同一个项目，Name有部分相同关键字)
         /**---------------------测试用例赋值开始---------------------**/
         Category c2 = new Category();
         c2.setProjectId(1L);
@@ -102,13 +102,6 @@ public class CategoryControllerTest {
         c2.setSequence(2);
         c2.setCreatorUserId(2);
         categoryRepository.save(c2);
-        //提示：构造"修改过的数据"时需要给"最近修改时间"和"最近修改者"赋值
-        //c2.setLastModificationTime(new Date());
-        //c2.setLastModifierUserId(1);
-        //提示：构造"非物理删除的数据"时需要给"已删除"、"删除时间"和"删除者"赋值
-        //c2.setIsDeleted(true);
-        //c2.setDeletionTime(new Date());
-        //c2.setDeleterUserId(1);
         /**---------------------测试用例赋值结束---------------------**/
 
         //添加分类：用例3(分类名称与用例1和用例2完全不同：同一个项目，Name没有相同的关键字)
@@ -164,7 +157,6 @@ public class CategoryControllerTest {
          */
 
         /**---------------------测试用例赋值开始---------------------**/
-        //TODO 将下面的null值换为测试参数
         Pageable pageable=new PageRequest(0,10, Sort.Direction.ASC,"sequence");
         // 期望获得的结果数量(默认有两个测试用例，所以值应为"2L"，如果新增了更多测试用例，请相应设定这个值)
         expectResultCount = 4L;
@@ -204,7 +196,6 @@ public class CategoryControllerTest {
 
         //标准查询1：projectId=1,keyWord="文档分类"
         /**---------------------测试用例赋值开始---------------------**/
-        //TODO 将下面的null值换为测试参数
         dto = new CategoryDTO();
         dto.setKeyword("文档分类");
         dto.setProjectId(c1.getProjectId());
@@ -329,7 +320,7 @@ public class CategoryControllerTest {
 
         Assert.assertEquals("错误，标准查询返回数据与期望结果有差异",expectData,responseData);
 
-        //标准查询4：projectId=2,keyWord="资料归档"
+        //标准查询4：projectId=2,keyWord="分类"
         /**---------------------测试用例赋值开始---------------------**/
         dto = new CategoryDTO();
         dto.setKeyword("分类");
@@ -385,26 +376,67 @@ public class CategoryControllerTest {
          * 测试新增文档分类
          */
 
-         //TODO 列出新增文档分类测试用例清单
+        /**
+         * 列出新增文档分类测试用例清单
+         *
+         用例1:全部参数使用合法中间值
+         ProjectId=1L；
+         name="用例1文档分类";
+         sequence="10";
+         operator="1L";
 
+         用例2:name采用合法边界值Min：name="测";
+         (其它参数沿用用例1的合法中间值)
+
+         用例3:name采用合法边界值Min+:name="测试";
+
+         用例4:name采用合法边界值Max:name="测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试";
+
+         用例5:name采用合法边界值Max-:name="测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测";
+
+         用例6:name采用非法等价类：空值；
+
+         用例7:name采用非法边界值Max+:name="测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测超长";
+
+         用例8:name同项目下唯一性逻辑校验：name=“文档分类一”(采用SetUp()中相同的值)；
+
+         用例9:sequence采用合法边界值Min：sequence=1；
+
+         用例10:sequence采用合法边界值Min+：sequence=2；
+
+         用例11:sequence采用合法边界值Max：sequence=Integer.MAX_VALUE；
+
+         用例12:sequence采用合法边界值Max-：sequence=Integer.MAX_VALUE-1；
+
+         用例13:sequence采用非法等价类：空值；
+
+         用例14:sequence采用非法边界值Min-：sequence=0；
+
+         用例15:sequence采用非法边界值：sequence=-1；
+
+         用例16:sequence采用非法边界值Max+：sequence=Integer.MAX_VALUE+1；
+
+         用例17:sequence采用非法等价类：abc(字符)；
+         */
+
+        //用例1:全部参数使用合法中间值
         /**---------------------测试用例赋值开始---------------------**/
-        //TODO 将下面的null值换为测试参数
         Category category = new Category();
-        category.setProjectId(null);
-        category.setName(null);
-        category.setSequence(null);
+        category.setProjectId(1L);
+        category.setName("测试新增文档分类一");
+        category.setSequence(10);
 
-        Long operator = null;
-        Long id = 4L;
+        Long operator = 1L;
+        Long id = 8L;
         /**---------------------测试用例赋值结束---------------------**/
 
         this.mockMvc.perform(
-                        MockMvcRequestBuilders.post("/category/create")
-                                .param("projectId",category.getProjectId().toString())
-                                .param("name",category.getName())
-                                .param("sequence",category.getSequence().toString())
-                                .param("operator",operator.toString())
-                )
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
                 // 打印结果
                 .andDo(print())
                 // 检查状态码为200
@@ -425,32 +457,506 @@ public class CategoryControllerTest {
                 .andExpect(jsonPath("$.category.deleterUserId").value(0))
                 .andReturn();
 
+        //用例2:合法边界值（Min）
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("测");
+        id++;
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"category"
+                .andExpect(content().string(containsString("category")))
+                // 检查返回的数据节点
+                .andExpect(jsonPath("$.category.categoryId").value(id))
+                .andExpect(jsonPath("$.category.projectId").value(category.getProjectId()))
+                .andExpect(jsonPath("$.category.name").value(category.getName()))
+                .andExpect(jsonPath("$.category.sequence").value(category.getSequence()))
+                .andExpect(jsonPath("$.category.creationTime").isNotEmpty())
+                .andExpect(jsonPath("$.category.creatorUserId").value(operator))
+                .andExpect(jsonPath("$.category.lastModificationTime").isEmpty())
+                .andExpect(jsonPath("$.category.lastModifierUserId").value(0))
+                .andExpect(jsonPath("$.category.isDeleted").value(false))
+                .andExpect(jsonPath("$.category.deletionTime").isEmpty())
+                .andExpect(jsonPath("$.category.deleterUserId").value(0))
+                .andReturn();
+
+        //用例3:合法边界值(Min+1)
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("测试");
+        id++;
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"category"
+                .andExpect(content().string(containsString("category")))
+                // 检查返回的数据节点
+                .andExpect(jsonPath("$.category.categoryId").value(id))
+                .andExpect(jsonPath("$.category.projectId").value(category.getProjectId()))
+                .andExpect(jsonPath("$.category.name").value(category.getName()))
+                .andExpect(jsonPath("$.category.sequence").value(category.getSequence()))
+                .andExpect(jsonPath("$.category.creationTime").isNotEmpty())
+                .andExpect(jsonPath("$.category.creatorUserId").value(operator))
+                .andExpect(jsonPath("$.category.lastModificationTime").isEmpty())
+                .andExpect(jsonPath("$.category.lastModifierUserId").value(0))
+                .andExpect(jsonPath("$.category.isDeleted").value(false))
+                .andExpect(jsonPath("$.category.deletionTime").isEmpty())
+                .andExpect(jsonPath("$.category.deleterUserId").value(0))
+                .andReturn();
+
+        //用例4:合法边界值(Max)
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试");
+        id++;
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"category"
+                .andExpect(content().string(containsString("category")))
+                // 检查返回的数据节点
+                .andExpect(jsonPath("$.category.categoryId").value(id))
+                .andExpect(jsonPath("$.category.projectId").value(category.getProjectId()))
+                .andExpect(jsonPath("$.category.name").value(category.getName()))
+                .andExpect(jsonPath("$.category.sequence").value(category.getSequence()))
+                .andExpect(jsonPath("$.category.creationTime").isNotEmpty())
+                .andExpect(jsonPath("$.category.creatorUserId").value(operator))
+                .andExpect(jsonPath("$.category.lastModificationTime").isEmpty())
+                .andExpect(jsonPath("$.category.lastModifierUserId").value(0))
+                .andExpect(jsonPath("$.category.isDeleted").value(false))
+                .andExpect(jsonPath("$.category.deletionTime").isEmpty())
+                .andExpect(jsonPath("$.category.deleterUserId").value(0))
+                .andReturn();
+
+        //用例5:合法边界值(Max-1)
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测");
+        id++;
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"category"
+                .andExpect(content().string(containsString("category")))
+                // 检查返回的数据节点
+                .andExpect(jsonPath("$.category.categoryId").value(id))
+                .andExpect(jsonPath("$.category.projectId").value(category.getProjectId()))
+                .andExpect(jsonPath("$.category.name").value(category.getName()))
+                .andExpect(jsonPath("$.category.sequence").value(category.getSequence()))
+                .andExpect(jsonPath("$.category.creationTime").isNotEmpty())
+                .andExpect(jsonPath("$.category.creatorUserId").value(operator))
+                .andExpect(jsonPath("$.category.lastModificationTime").isEmpty())
+                .andExpect(jsonPath("$.category.lastModifierUserId").value(0))
+                .andExpect(jsonPath("$.category.isDeleted").value(false))
+                .andExpect(jsonPath("$.category.deletionTime").isEmpty())
+                .andExpect(jsonPath("$.category.deleterUserId").value(0))
+                .andReturn();
+
+        //用例6:非法边界值(空值)
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("");
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"formErrors"
+                .andExpect(content().string(containsString("formErrors")))
+                // 检查返回的数据节点
+                .andExpect(content().string(containsString("\"code\" : \"NotBlank\"")))
+                .andReturn();
+
+        //用例7:非法边界值(Max+1)
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测试新增文档分类测超长");
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"formErrors"
+                .andExpect(content().string(containsString("formErrors")))
+                // 检查返回的数据节点
+                .andExpect(content().string(containsString("\"code\" : \"Length\"")))
+                .andReturn();
+
+        //用例8:name同项目下唯一性逻辑校验
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("文档分类一");
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"errorMessage"
+                .andExpect(content().string(containsString("\"errorMessage\" : \"[10001]")))
+                .andReturn();
+
+        //用例9:sequence采用合法边界值Min：sequence=1；
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("用例9文档分类");
+        category.setSequence(1);
+        id++;
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"category"
+                .andExpect(content().string(containsString("category")))
+                // 检查返回的数据节点
+                .andExpect(jsonPath("$.category.categoryId").value(id))
+                .andExpect(jsonPath("$.category.projectId").value(category.getProjectId()))
+                .andExpect(jsonPath("$.category.name").value(category.getName()))
+                .andExpect(jsonPath("$.category.sequence").value(category.getSequence()))
+                .andExpect(jsonPath("$.category.creationTime").isNotEmpty())
+                .andExpect(jsonPath("$.category.creatorUserId").value(operator))
+                .andExpect(jsonPath("$.category.lastModificationTime").isEmpty())
+                .andExpect(jsonPath("$.category.lastModifierUserId").value(0))
+                .andExpect(jsonPath("$.category.isDeleted").value(false))
+                .andExpect(jsonPath("$.category.deletionTime").isEmpty())
+                .andExpect(jsonPath("$.category.deleterUserId").value(0))
+                .andReturn();
+
+        //用例10:sequence采用合法边界值Min+：sequence=2；
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("用例10文档分类");
+        category.setSequence(2);
+        id++;
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"category"
+                .andExpect(content().string(containsString("category")))
+                // 检查返回的数据节点
+                .andExpect(jsonPath("$.category.categoryId").value(id))
+                .andExpect(jsonPath("$.category.projectId").value(category.getProjectId()))
+                .andExpect(jsonPath("$.category.name").value(category.getName()))
+                .andExpect(jsonPath("$.category.sequence").value(category.getSequence()))
+                .andExpect(jsonPath("$.category.creationTime").isNotEmpty())
+                .andExpect(jsonPath("$.category.creatorUserId").value(operator))
+                .andExpect(jsonPath("$.category.lastModificationTime").isEmpty())
+                .andExpect(jsonPath("$.category.lastModifierUserId").value(0))
+                .andExpect(jsonPath("$.category.isDeleted").value(false))
+                .andExpect(jsonPath("$.category.deletionTime").isEmpty())
+                .andExpect(jsonPath("$.category.deleterUserId").value(0))
+                .andReturn();
+
+        //用例11:sequence采用合法边界值Max：sequence=Integer.MAX_VALUE；
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("用例11文档分类");
+        category.setSequence(Integer.MAX_VALUE);
+        id++;
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"category"
+                .andExpect(content().string(containsString("category")))
+                // 检查返回的数据节点
+                .andExpect(jsonPath("$.category.categoryId").value(id))
+                .andExpect(jsonPath("$.category.projectId").value(category.getProjectId()))
+                .andExpect(jsonPath("$.category.name").value(category.getName()))
+                .andExpect(jsonPath("$.category.sequence").value(category.getSequence()))
+                .andExpect(jsonPath("$.category.creationTime").isNotEmpty())
+                .andExpect(jsonPath("$.category.creatorUserId").value(operator))
+                .andExpect(jsonPath("$.category.lastModificationTime").isEmpty())
+                .andExpect(jsonPath("$.category.lastModifierUserId").value(0))
+                .andExpect(jsonPath("$.category.isDeleted").value(false))
+                .andExpect(jsonPath("$.category.deletionTime").isEmpty())
+                .andExpect(jsonPath("$.category.deleterUserId").value(0))
+                .andReturn();
+
+        //用例12:sequence采用合法边界值Max-：sequence=Integer.MAX_VALUE-1；
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("用例12文档分类");
+        category.setSequence(Integer.MAX_VALUE - 1);
+        id++;
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"category"
+                .andExpect(content().string(containsString("category")))
+                // 检查返回的数据节点
+                .andExpect(jsonPath("$.category.categoryId").value(id))
+                .andExpect(jsonPath("$.category.projectId").value(category.getProjectId()))
+                .andExpect(jsonPath("$.category.name").value(category.getName()))
+                .andExpect(jsonPath("$.category.sequence").value(category.getSequence()))
+                .andExpect(jsonPath("$.category.creationTime").isNotEmpty())
+                .andExpect(jsonPath("$.category.creatorUserId").value(operator))
+                .andExpect(jsonPath("$.category.lastModificationTime").isEmpty())
+                .andExpect(jsonPath("$.category.lastModifierUserId").value(0))
+                .andExpect(jsonPath("$.category.isDeleted").value(false))
+                .andExpect(jsonPath("$.category.deletionTime").isEmpty())
+                .andExpect(jsonPath("$.category.deleterUserId").value(0))
+                .andReturn();
+
+        //用例13:sequence采用非法等价类：空值；
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("用例13文档分类");
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", "")//int型数据空值参数直接在mock请求中传参
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"formErrors"
+                .andExpect(content().string(containsString("formErrors")))
+                // 检查返回的数据节点
+                .andExpect(content().string(containsString("NotNull.category.sequence")))
+                .andReturn();
+
+        //用例14:sequence采用非法边界值Min-：sequence=0；
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("用例14文档分类");
+        category.setSequence(0);
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"formErrors"
+                .andExpect(content().string(containsString("formErrors")))
+                // 检查返回的数据节点
+                .andExpect(content().string(containsString("must be greater than or equal to 1")))
+                .andReturn();
+
+        //用例15:sequence采用非法边界值：sequence=-1；
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("用例15文档分类");
+        category.setSequence(-1);
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"formErrors"
+                .andExpect(content().string(containsString("formErrors")))
+                // 检查返回的数据节点
+                .andExpect(content().string(containsString("must be greater than or equal to 1")))
+                .andReturn();
+
+        //用例16:sequence采用非法边界值Max+：sequence=Integer.MAX_VALUE+1；
+        //Int取值范围为（-2147483648〜2147483647）
+        //Integer.MAX_VALUE+1=-2147483648，-2147483648+2=-2147483647
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("用例16文档分类");
+        category.setSequence(Integer.MAX_VALUE + 1);
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"formErrors"
+                .andExpect(content().string(containsString("formErrors")))
+                // 检查返回的数据节点
+                .andExpect(content().string(containsString("must be greater than or equal to 1")))
+                .andReturn();
+
+        //用例17:sequence采用非法等价类：abc(字符)；
+        /**---------------------测试用例赋值开始---------------------**/
+        category.setName("用例17文档分类");
+        /**---------------------测试用例赋值结束---------------------**/
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/create")
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", "abc")
+                        .param("operator", operator.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"formErrors"
+                .andExpect(content().string(containsString("formErrors")))
+                // 检查返回的数据节点
+                .andExpect(content().string(containsString("Failed to convert property value of type")))
+                .andReturn();
 
         /**
          * 测试修改文档分类
          */
 
-         //TODO 列出修改文档分类测试用例清单
+        /**
+         * 列出修改文档分类测试用例清单
+         *
+         修改用例1:全部参数使用合法中间值
+         name="修改用例1文档分类";
+         sequence="5";
+         operator="2L";
 
+         修改用例2:name采用合法边界值Min：name="改"，sequence采用合法边界值Min：sequence=1;
+         (其它参数沿用修改用例1的合法中间值)
+
+         修改用例3:name采用合法边界值Min+:name="修改"，sequence采用合法边界值Min+：sequence=2;
+
+         修改用例4:name采用合法边界值Max:name="测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试"，sequence采用合法边界值Max：sequence=Integer.MAX_VALUE;
+
+         修改用例5:name采用合法边界值Max-:name="测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测"，sequence采用合法边界值Max-：sequence=Integer.MAX_VALUE-1;
+
+         修改用例6:name采用非法等价类：空值，sequence采用非法等价类：空值；
+
+         修改用例7:name采用非法边界值Max+:name="测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测超长"，sequence采用非法边界值Max+：sequence=Integer.MAX_VALUE+1;
+
+         修改用例8:name同项目下唯一性逻辑校验：name=“文档分类一”(采用SetUp()中相同的值)；
+
+         修改用例9:sequence采用非法边界值Min-：sequence=0；
+
+         修改用例10:sequence采用非法边界值：sequence=-1；
+
+         修改用例11:sequence采用非法等价类：abc(字符)；
+         */
+
+        //修改用例1：全部参数使用合法中间值
         /**---------------------测试用例赋值开始---------------------**/
-        //TODO 将下面的null值换为测试参数
         category = new Category();
         category.setCategoryId(id);
-        category.setProjectId(null);
-        category.setName(null);
-        category.setSequence(null);
+        category.setProjectId(1L);
+        category.setName("修改用例1文档分类");
+        category.setSequence(5);
 
-        Long operator2 = null;
+        Long operator2 = 2L;
         /**---------------------测试用例赋值结束---------------------**/
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders.post("/category/modify")
-                        .param("categoryId",id.toString())
-                        .param("projectId",category.getProjectId().toString())
-                        .param("name",category.getName())
-                        .param("sequence",category.getSequence().toString())
-                        .param("operator",operator2.toString())
-                )
+                        .param("categoryId", id.toString())
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator2.toString())
+        )
                 // 打印结果
                 .andDo(print())
                 // 检查状态码为200
@@ -469,6 +975,139 @@ public class CategoryControllerTest {
                 .andExpect(jsonPath("$.category.isDeleted").value(false))
                 .andExpect(jsonPath("$.category.deletionTime").isEmpty())
                 .andExpect(jsonPath("$.category.deleterUserId").value(0))
+                .andReturn();
+
+        // 修改用例2:name采用合法边界值Min：name="改"，sequence采用合法边界值Min：sequence=1;
+        // 修改用例3:name采用合法边界值Min+:name="修改"，sequence采用合法边界值Min+：sequence=2
+        // 修改用例4:name采用合法边界值Max:name="测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试"，
+        // sequence采用合法边界值Max：sequence=Integer.MAX_VALUE;
+        // 修改用例5:name采用合法边界值Max-:name="测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测"，
+        // sequence采用合法边界值Max-：sequence=Integer.MAX_VALUE-1;
+
+        /**---------------------测试用例赋值开始---------------------**/
+        String[] names = {"改", "修改", "测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试", "测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测"};
+        int[] sequences = {1, 2, Integer.MAX_VALUE, Integer.MAX_VALUE - 1};
+        /**---------------------测试用例赋值结束---------------------**/
+
+        for (int i = 0; i < 4; i++) {
+
+            category.setName(names[i]);
+            category.setSequence(sequences[i]);
+
+            this.mockMvc.perform(
+                    MockMvcRequestBuilders.post("/category/modify")
+                            .param("categoryId", id.toString())
+                            .param("projectId", category.getProjectId().toString())
+                            .param("name", category.getName())
+                            .param("sequence", category.getSequence().toString())
+                            .param("operator", operator2.toString())
+            )
+                    // 打印结果
+                    .andDo(print())
+                    // 检查状态码为200
+                    .andExpect(status().isOk())
+                    // 检查内容有"category"
+                    .andExpect(content().string(containsString("category")))
+                    // 检查返回的数据节点
+                    .andExpect(jsonPath("$.category.categoryId").value(id))
+                    .andExpect(jsonPath("$.category.projectId").value(category.getProjectId()))
+                    .andExpect(jsonPath("$.category.name").value(category.getName()))
+                    .andExpect(jsonPath("$.category.sequence").value(category.getSequence()))
+                    .andExpect(jsonPath("$.category.creationTime").isNotEmpty())
+                    .andExpect(jsonPath("$.category.creatorUserId").value(operator))
+                    .andExpect(jsonPath("$.category.lastModificationTime").isNotEmpty())
+                    .andExpect(jsonPath("$.category.lastModifierUserId").value(operator2))
+                    .andExpect(jsonPath("$.category.isDeleted").value(false))
+                    .andExpect(jsonPath("$.category.deletionTime").isEmpty())
+                    .andExpect(jsonPath("$.category.deleterUserId").value(0))
+                    .andReturn();
+        }
+
+        //修改用例7:name采用非法边界值Max+:name="测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测超长"，sequence采用非法边界值Max+：sequence=Integer.MAX_VALUE+1;
+        category.setName("测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测试修改文档分类测超长");
+        category.setSequence(Integer.MAX_VALUE+1);
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/modify")
+                        .param("categoryId", id.toString())
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator2.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查内容有"formErrors"
+                .andExpect(content().string(containsString("formErrors")))
+                // 检查返回的数据节点
+                .andExpect(content().string(containsString("\"code\" : \"Length\"")))
+                .andExpect(content().string(containsString("must be greater than or equal to 1")))
+                .andReturn();
+
+        //修改用例8:name同项目下唯一性逻辑校验：name=“文档分类一”(采用SetUp()中相同的值)；
+        category.setName("文档分类一");
+        category.setSequence(5);//还原非法值
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/modify")
+                        .param("categoryId", id.toString())
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", category.getSequence().toString())
+                        .param("operator", operator2.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查返回的数据节点
+                .andExpect(content().string(containsString("\"errorMessage\" : \"[10001]")))
+                .andReturn();
+
+        // 修改用例9:sequence采用非法边界值Min-：sequence=0；
+        // 修改用例10:sequence采用非法边界值：sequence=-1；
+        /**---------------------测试用例赋值开始---------------------**/
+        int[] sequences10 = {0, -1};
+        /**---------------------测试用例赋值结束---------------------**/
+
+        for (int i = 0; i < 2; i++) {
+
+            category.setSequence(sequences10[i]);
+
+            this.mockMvc.perform(
+                    MockMvcRequestBuilders.post("/category/modify")
+                            .param("categoryId", id.toString())
+                            .param("projectId", category.getProjectId().toString())
+                            .param("name", category.getName())
+                            .param("sequence", category.getSequence().toString())
+                            .param("operator", operator2.toString())
+            )
+                    // 打印结果
+                    .andDo(print())
+                    // 检查状态码为200
+                    .andExpect(status().isOk())
+                    // 检查返回的数据节点
+                    .andExpect(content().string(containsString("must be greater than or equal to 1")))
+                    .andReturn();
+        }
+
+        //修改用例11:sequence采用非法等价类：abc(字符)；
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post("/category/modify")
+                        .param("categoryId", id.toString())
+                        .param("projectId", category.getProjectId().toString())
+                        .param("name", category.getName())
+                        .param("sequence", "abc")//直接赋非法值
+                        .param("operator", operator2.toString())
+        )
+                // 打印结果
+                .andDo(print())
+                // 检查状态码为200
+                .andExpect(status().isOk())
+                // 检查返回的数据节点
+                .andExpect(content().string(containsString("Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Integer' for property 'sequence'")))
                 .andReturn();
     }
 
