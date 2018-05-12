@@ -64,6 +64,8 @@ public class CategoryControllerTest {
     // 期望获得的结果数量
     private Long expectResultCount;
 
+    private Long id = 0L;
+
     // 使用JUnit的@Before注解可在测试开始前进行一些初始化的工作
     @Before
     public void setUp() throws JsonProcessingException {
@@ -77,6 +79,8 @@ public class CategoryControllerTest {
         c1.setCreatorUserId(1);
         categoryRepository.save(c1);
         /**---------------------测试用例赋值结束---------------------**/
+
+        id=c1.getCategoryId();
 
         // 获取mockMvc对象实例
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -1119,8 +1123,7 @@ public class CategoryControllerTest {
     @Test
     public void testView() throws Exception
     {
-        //TODO 下面id的值由testView方法执行时总共由testList、testSave和testView方法执行几次插入数据表决定当前的主键ID值
-        Long id = 5L;
+        id=6L;
 
         this.mockMvc.perform(
                         MockMvcRequestBuilders.get("/category/view/{id}",id)
@@ -1155,9 +1158,6 @@ public class CategoryControllerTest {
     @Test
     public void testDelete() throws Exception
     {
-        //TODO 下面id的值由testView方法执行时总共由testList、testSave、testView和testDelete方法执行几次插入数据表决定当前的主键ID值
-        Long id = 6L;
-
         this.mockMvc.perform(
                         MockMvcRequestBuilders.get("/category/delete/{id}",id)
                                 .param("operator","2")
