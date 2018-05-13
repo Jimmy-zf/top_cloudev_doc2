@@ -1123,8 +1123,6 @@ public class CategoryControllerTest {
     @Test
     public void testView() throws Exception
     {
-        id=6L;
-
         this.mockMvc.perform(
                         MockMvcRequestBuilders.get("/category/view/{id}",id)
                                 .accept(MediaType.APPLICATION_JSON)
